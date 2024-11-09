@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Classic Models Dashboard</h2>
+
+    <p>
+    Welcome to the Classic Models Dashboard. Use the select box below to choose
+    which type of report you would like to view. <br>
+    This is the final project for IT-3380 Database Systems, completed by Kaelyn Crews.
+    </p>
+
+    <hr>
+
+    <form id="reportType" action="{{url_for('index')}}" method="POST">
+        <legend>Choose Report Option:</legend>
+        <select id="reportSelection" name="selection">
+            <option value="">Choose an Option</option>
+            <option value="products">Products</option>
+            <option value="customers">Customers</option>
+            <option value="employees">Employees</option>
+        </select>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
+{% endblock %}

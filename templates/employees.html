@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>View Employee Reports</h2>
+<hr>
+<form id="employeeReport" action="{{url_for('employees')}}" method="POST">
+    <legend>Choose Employee Report Option: </legend>
+    <select id="reportType" name="reportType">
+        <option value="">Choose an Option</option>
+        <option value="orders">View Employee Order Totals</option>
+        <option value="numOfOrders">View Employee Number of Orders</option>
+    </select>
+    <select id="year" name="year">
+        <option value="">Choose a Year</option>
+        {% for year in years %}
+            <option value="{{ year['YEAR(orderDate)']}}">{{ year['YEAR(orderDate)']}}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button type="Submit">Submit</button>
+</form>
+
+{% if chart %}
+    <hr>
+    <div id="chart">
+        <embed type="image/svg+xml" src= {{ chart|safe }} />
+    </div>
+{% endif %}
+
+{% if totalOrdersResult %}
+    <hr>
+    <table>
+        <tr>
+            <th>Employee Name</th>
+            <th>Total Orders</th>
+        </tr>
+        {% for employee in totalOrdersResult %}
+            <tr>
+                <td>{{ employee['employeeName'] }}</td>
+                <td>${{ employee['totalOrderValue'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% if numOfOrdersResult %}
+    <hr>
+    <table>
+        <tr>
+            <th>Employee Name</th>
+            <th>Number of Orders</th>
+        </tr>
+        {% for employee in numOfOrdersResult %}
+            <tr>
+                <td>{{ employee['employeeName'] }}</td>
+                <td>{{ employee['totalOrders'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% endblock %}

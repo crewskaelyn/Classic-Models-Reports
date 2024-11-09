@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>View Customer Reports</h2>
+
+<hr>
+
+<form id="customerReport" action="{{url_for('customers')}}" method="POST">
+    <legend>Choose Customer Report Option: </legend>
+    <select id="reportType" name="reportType">
+        <option value="">Choose an Option</option>
+        <option value="orders">View Total Orders by Customer</option>
+        <option value="payments">View Total Payments by Customer</option>
+    </select>
+    <select id="year" name="year">
+        <option value="">Choose a Year</option>
+        {% for year in years %}
+            <option value="{{ year['YEAR(orderDate)']}}">{{ year['YEAR(orderDate)']}}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button type="Submit">Submit</button>
+</form>
+{% if chart %}
+    <hr>
+    <div id="chart">
+        <embed type="image/svg+xml" src= {{ chart|safe }} />
+    </div>
+{% endif %}
+
+{% if ordersResult %}
+    <hr>
+    <table>
+        <tr>
+            <th>Customer Name</th>
+            <th>Total Orders</th>
+        </tr>
+        {% for customer in ordersResult %}
+            <tr>
+                <td>{{ customer['customerName'] }}</td>
+                <td>${{ customer['totalOrder'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% if paymentsResult %}
+    <hr>
+    <table>
+        <tr>
+            <th>Customer Name</th>
+            <th>Total Payments</th>
+        </tr>
+        {% for customer in paymentsResult %}
+            <tr>
+                <td>{{ customer['customerName'] }}</td>
+                <td>${{ customer['totalPayment'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% endblock %}

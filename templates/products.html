@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>View Product Reports</h2>
+
+<hr>
+
+<form id="productReport" action="{{url_for('products')}}" method="POST">
+    <legend>Choose Product Report Option: </legend>
+    <select id="reportType" name="reportType">
+        <option value="">Choose an Option</option>
+        <option value="monthly">View Monthly Order Totals</option>
+        <option value="byProductLine">View Order Totals by Product Lines</option>
+        <option value="byProducts">View Order Totals by Product</option>
+    </select>
+    <select id="year" name="year">
+        <option value="">Choose a Year</option>
+        {% for year in years %}
+            <option value="{{ year['YEAR(orderDate)']}}">{{ year['YEAR(orderDate)']}}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button type="Submit">Submit</button>
+</form>
+
+{% if chart %}
+    <hr>
+    <div id="chart">
+        <embed type="image/svg+xml" src= {{ chart|safe }} />
+    </div>
+{% endif %}
+
+{% if monthlyResults %}
+    <hr>
+    <table>
+        <tr>
+            <th>Month</th>
+            <th>Total Sales</th>
+        </tr>
+        {% for month in monthlyResults %}
+            <tr>
+                <td>{{ month['orderMonth'] }}</td>
+                <td>${{ month['totalOrderValue'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% if productLineResults %}
+    <hr>
+    <table>
+        <tr>
+            <th>Product Line</th>
+            <th>Total Sales</th>
+        </tr>
+        {% for product in productLineResults %}
+            <tr>
+                <td>{{ product['productLine'] }}</td>
+                <td>${{ product['totalOrderValue'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% if productResults %}
+    <hr>
+    <table>
+        <tr>
+            <th>Product Name</th>
+            <th>Total Sales</th>
+        </tr>
+        {% for product in productResults %}
+            <tr>
+                <td>{{ product['productName'] }}</td>
+                <td>${{ product['totalOrderValue'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% endblock %}
